@@ -1,11 +1,12 @@
-#include <netdb.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <netdb.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+#include "utils.h"
 
 #define HOST "127.0.0.1"
 #define PORT "8888"
@@ -47,31 +48,11 @@ void cleanup(int sockfd)
 		close(sockfd);
 }
 
-/**
- * Reads the one character response from the server.
- */ 
-void read_from_socket(int sockfd)
-{
-	char buf[1];
-	ssize_t byte = read(sockfd, buf, sizeof(buf));
-
-	if (byte <= 0) {
-		// Either the connection is closed or error occured. We don't care either
-		// way, so cleanup and exit
-		cleanup(sockfd);
-		exit(1);
-	} 
-
-	// Received our 1 byte character from the server, let's print it!
-	write(1, buf, sizeof(buf));
-}
-
-int main() 
+int main()
 {
 	int sockfd = connect_to_server(HOST, PORT);
-
-	read_from_socket(sockfd);
-
+	char buf = read_byte_from_socket(sockfd);
+	write(1, &buf, sizeof(buf));
 	cleanup(sockfd);
 
 	return 0;
