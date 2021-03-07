@@ -12,3 +12,7 @@ existance, the replies were a bit trolly.
 
 The replies were filled with dozens of overcomplicated hello world programs. I search
 but could not find this post anywhere. 
+
+## TODO
+- Add server.c to process client
+- Rewrite and proof read this file
